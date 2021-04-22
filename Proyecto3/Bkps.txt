@@ -1,0 +1,37 @@
+*************************************** Split *******************************************
+if lineaGramatica == ['*', '']:
+            listadeListasGramatica.append(cadenaConcaten)
+            cadenaConcaten=""
+
+    for obj in listaLineasArchivo:
+                print(obj)
+
+    print (cadenaConcaten)
+    indexPrueba = len(listadeListasGramatica)
+    for i in range (indexPrueba):
+        if(i==1):
+            print("primera gramatica")
+            print(listadeListasGramatica[0])
+        #elif (i==2):
+            #print("Segunda Gramatica")
+            #print(listaLineasArchivo[2])
+
+
+            if lineaGramatica == ['*', '']:
+            listadeListasGramatica.append(cadenaConcaten)
+            cadenaConcaten=""
+
+
+            for linea in archivoLectura:
+        cadenaConcaten
+        lineaGramatica=linea.split()
+        #print(lineaGramatica)
+        listaLineasArchivo.append(lineaGramatica)
+        if lineaGramatica == ['*']:
+            listaTemp=listaLineasArchivo[:]
+            gramatica=listaTemp[:]
+            listadeListasGramatica.append(gramatica)
+            listaLineasArchivo.clear
+
+    for obj in listadeListasGramatica:
+        print(obj)    
