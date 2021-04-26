@@ -18,6 +18,7 @@ def menu():
     return opcion
 
 def cargarArchivo(): 
+    global listaGramaticasT
     archivo = askopenfilename()#Abre la interfaz para escoger el archivo a cargar
     print(archivo)#se obtiene el URL
 
@@ -57,26 +58,66 @@ def cargarArchivo():
         listaGramaticasT.append(list(lTemp))
         lTemp.clear()
         lTempProd.clear()
-
-
-    for i in range (indexPrueba):
-        if(i==0):
-            print("primera gramatica")
-            print(listadeListasGramatica[0])
-        elif (i==1):
-            print("Segunda Gramatica")
-            print(listadeListasGramatica[1])
     #---------------------------  Impresion de Todas las Gramaticas bien Separadas -----------------------------------------------
     indexPrueba = len(listaGramaticasT)
 
     for obj in listaGramaticasT:
         print(obj)
+    print("----------------- Lectura -------------------------")
     
-def eliminarGramaticas():
+def produccionesGramaticas():
     listaGramaticasTc=list(listaGramaticasT)
-    indexGramaticas = len(listaGramaticasTc)   
-    for i in range(indexGramaticas):
-        
+    indexPrincipal = len (listaGramaticasTc)
+    bandera = False
+    for x in range(indexPrincipal):
+        indexInterno = len(listaGramaticasTc[x])
+        for y in range(indexInterno):
+            if(y==2):
+                tempProducciones = list(listaGramaticasTc[x][y])
+                producciones=[]
+                indexProducciones = len(tempProducciones)
+                for z in range(indexProducciones):
+                    cadenaProduccion = str(listaGramaticasTc[x][y][z]).split("->")
+                    producciones.append(cadenaProduccion)
+                listaGramaticasTc[x][y]=list(producciones)
+                producciones.clear()
+
+    print ("------------------ Aqui vere como quedan Gramticas Normales --------------------")
+    print("------------------------------------------------------------------------------------------")
+    for obj in listaGramaticasT:
+        print(obj)
+    print("\n")
+    print ("------------------ Aqui vere como quedan Gramticas Expandidas --------------------")
+    print("------------------------------------------------------------------------------------------")
+    for obj in listaGramaticasTc:
+        print(obj)
+    print("------------------- Eliminacion -----------------------------------------------")
+    for x in range(indexPrincipal):
+        indexInterno = len(listaGramaticasTc[x])
+        print(indexInterno)
+        for y in range(indexInterno):
+            #print("prueba"+str(y))
+            if(y==2):
+                indexBusquedaInterna = len(listaGramaticasTc[x][y])
+                print(indexBusquedaInterna)
+                for z in range(indexBusquedaInterna):
+                    print(str(listaGramaticasTc[x][y][z]))
+                    print(int(len(listaGramaticasTc[x][y][z])))
+                    if(int(len(listaGramaticasTc[x][y][z])>=3)):
+                        bandera=True
+                print(bandera)        
+        #if(bandera==False):
+            #del(listaGramaticasTc[x])
+        #else:
+            #bandera=False
+    print("------------------------------------------------------------------------------------------")
+    for obj in listaGramaticasT:
+        print(obj)
+    print("\n")
+    print ("------------------ Aqui vere como quedan Gramticas Expandidas --------------------")
+    print("------------------------------------------------------------------------------------------")
+    for obj in listaGramaticasTc:
+        print(obj)
 
 
 def salir():
@@ -94,6 +135,7 @@ while(ciclo):
     if numero == "1":
         print("Opcion1")
         cargarArchivo()
+        produccionesGramaticas()
         input("")
         
     elif numero == "2":

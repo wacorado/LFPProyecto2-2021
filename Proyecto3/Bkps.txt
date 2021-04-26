@@ -35,3 +35,20 @@ if lineaGramatica == ['*', '']:
 
     for obj in listadeListasGramatica:
         print(obj)    
+
+
+-------------------------------------- recoridos para eliminar Gramatidas ----------------------------------------------------------
+
+    indexBusquedaExterna = len(listaGramaticasTc)
+    for x in range(indexBusquedaExterna):
+        indexBusquedaMedio = len(listaGramaticasTc[x])
+        for y in range(indexBusquedaMedio):
+            if(y==2):
+                indexBusquedaInterna = len(listaGramaticasTc[x][y])
+                for z in range(indexBusquedaInterna):
+                    if(int(len(listaGramaticasTc[x][y][z])>=3)):
+                        bandera=True
+        if(bandera==False):
+            del(listaGramaticasTc[x])
+        else:
+            bandera=False
