@@ -1,5 +1,6 @@
 import os
 import copy
+from copy import deepcopy
 from tkinter.filedialog import askopenfilename
 
 listaLineasArchivo=[]
@@ -66,7 +67,7 @@ def cargarArchivo():
     print("----------------- Lectura -------------------------")
     
 def produccionesGramaticas():
-    listaGramaticasTc=list(listaGramaticasT)
+    listaGramaticasTc= deepcopy(listaGramaticasT)
     indexPrincipal = len (listaGramaticasTc)
     bandera = False
     for x in range(indexPrincipal):
@@ -78,7 +79,8 @@ def produccionesGramaticas():
                 indexProducciones = len(tempProducciones)
                 for z in range(indexProducciones):
                     cadenaProduccion = str(listaGramaticasTc[x][y][z]).split("->")
-                    producciones.append(cadenaProduccion)
+                    cadenaProduccion2=(str(cadenaProduccion).split(","))
+                    producciones.append(cadenaProduccion2)
                 listaGramaticasTc[x][y]=list(producciones)
                 producciones.clear()
 
@@ -103,13 +105,14 @@ def produccionesGramaticas():
                 for z in range(indexBusquedaInterna):
                     print(str(listaGramaticasTc[x][y][z]))
                     print(int(len(listaGramaticasTc[x][y][z])))
-                    if(int(len(listaGramaticasTc[x][y][z])>=3)):
+                    if(int(len(listaGramaticasTc[x][y][z])>=4)):
                         bandera=True
                 print(bandera)        
-        #if(bandera==False):
-            #del(listaGramaticasTc[x])
-        #else:
-            #bandera=False
+        if(bandera==False):
+            del(listaGramaticasTc[x])
+            del(listaGramaticasT[x])
+        else:
+            bandera=False
     print("------------------------------------------------------------------------------------------")
     for obj in listaGramaticasT:
         print(obj)
@@ -118,6 +121,11 @@ def produccionesGramaticas():
     print("------------------------------------------------------------------------------------------")
     for obj in listaGramaticasTc:
         print(obj)
+        print("\n")
+    print("----------------- gramagicas originales ------------------------------------")
+    for obj in listaGramaticasT:
+        print(obj)
+        print("\n")
 
 
 def salir():
