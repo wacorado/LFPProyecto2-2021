@@ -52,3 +52,57 @@ if lineaGramatica == ['*', '']:
             del(listaGramaticasTc[x])
         else:
             bandera=False
+
+
+             elif(y==2):
+                CadenaMostrarGram=CadenaMostrarGram+"                       Producciones:  \n"
+                indexInterno2=len(listaGramaticasT[x][y])
+                for z in range(indexInterno2):
+                    CadenaMostrarGram=CadenaMostrarGram+"                         "+str(listaGramaticasT[x][y][z])+" \n"
+
+
+
+                    print("------------------- Otras Producciones -----------------------------------------------")
+    for x in range(indexPrincipal):
+        indexInterno = len(listaGramaticasTc[x])
+        print(indexInterno)
+        for y in range(indexInterno):
+            #print("prueba"+str(y))
+            if(y==2):
+                indexBusquedaInterna = len(listaGramaticasTc[x][y])
+                print(indexBusquedaInterna)
+                for z in range(indexBusquedaInterna):
+                    print(str(listaGramaticasTc[x][y][z]))
+                    print(int(len(listaGramaticasTc[x][y][z])))
+                    if(int(len(listaGramaticasTc[x][y][z])>=4)):
+                        bandera=True
+                print(bandera)        
+        if(bandera==False):
+            del(listaGramaticasTc[x])
+            del(listaGramaticasT[x])
+        else:
+            bandera=False
+
+
+
+    x    indexExterno=len(listaGramaticasTc)
+    for v in range(indexExterno):
+        indexInterno1=len(listaGramaticasTc[v])
+        for w in range(indexInterno1):
+            indexInterno2 = len(listaGramaticasTc[v][w])
+            if(y==2):
+                print(str(listaGramaticasTc[v][w]))
+                for x in range(indexInterno2):
+                    indexInterno3= len(listaGramaticasTc[v][w][x])
+                    print(str(listaGramaticasTc[v][w][x]))
+                    for y in range(indexInterno3):
+                        print(int(len(listaGramaticasTc[v][w][x][y])))
+                        print(str(listaGramaticasTc[v][w][x][y]))
+                        if(x==0):
+                            cadenaTemp="λ,"+str(listaGramaticasTc[v][w][x][y])+";"
+                        else:
+                            cadenaTemp=cadenaTemp+str(listaGramaticasTc[v][w][x][y])
+                    listaProducciones.append(cadenaTemp)
+
+    for obj in listaProducciones:
+        print(obj)
