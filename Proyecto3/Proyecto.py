@@ -10,6 +10,21 @@ listaGramaticasTc=[]
 listaGramaticasProducciones=[]
 listaInfoGramaticas=[]
 listaGramaticaAutoPila=[]
+listaNombresGramaticasAP=[]
+listaTerminalesGramaticasAP=[]
+listaAlfabetoGramaticasAP=[]
+listaProduccionesGramaticasAp=[]
+listaProduccionesAPila=[]
+contadorGraficas=0
+listaIndiceGraficas=[]
+nombreAutomata="AP_"
+terminales=""
+alfabetoPila=""
+estados="Estados = i,p,q,f"
+estadoInicio="Estado Inicio = { i }"
+estadoFin="Estado Fin = { f }"
+produccionCadTemp=""
+listaProducciones=[]
 def menu():
     #-------------- Funcion que imprime las posibles opciones a acceder y retorna el valor ingresado -----------------------------------
     print("1. Carga de Archivo")
@@ -155,18 +170,41 @@ def mostrarInfoGramaticas():
     print(CadenaMostrarGram)
 
 def generarAutomata():
-
-    nombreAutomata="AP_"
-    terminales=""
-    alfabetoPila=""
-    estados="Estados = {i,p,q,f}"
-    estadoInicio="Estado Inicio = { i }"
-    estadoFin="Estado Fin = { f }"
-    listaProducciones=[]
-
+    global nombreAutomata, terminales, alfabetoPila, estados, estadoInicio, estadoFin, produccionCadTemp, listaProducciones
+    
+    #--------------------------------------- Obtener Producciones de la Gramatica indicadas -------------------------------------------
     listaGramaticasTc2= deepcopy(listaGramaticasT)
-    indexPrincipal = len (listaGramaticasTc2)
-    for x in range(indexPrincipal):
+    #indexPrincipal = len (listaGramaticasTc2)
+    
+    
+    for obj in listaProducciones:
+        print(obj)
+    
+    indexExterno = len(listaGramaticasT)
+    for x in range(indexExterno):
+        indexMedio = len(listaGramaticasT[x])
+        for y in range (indexMedio):
+            if(y==0):
+                nomTemp1=str(listaGramaticasT[x][y]).replace("['","")
+                nomTemp2=nomTemp1.replace("']","")
+                nombreAutomata=nombreAutomata+nomTemp2 #-------------- Aqui Obtengo el nombre del Automata -----------------------
+            elif(y==1):
+                indexInterno1=len(listaGramaticasT[x][y])
+                for z in range(indexInterno1):
+                    if(z==0):
+                        noTerminales=str(listaGramaticasT[x][y][z]).replace("['","")
+                    elif(z==1):
+                        terminales=terminales+""+str(listaGramaticasT[x][y][z])
+                        alfabetoPila=alfabetoPila+""+str(listaGramaticasT[x][y][z])+","+noTerminales+", #"
+                        listaTerminalesTemp=[]
+                        terminalTemp=str(listaGramaticasT[x][y][z]).split(",")
+                        listaTerminalesTemp.append(terminalTemp)
+                        indexProduccionesSiguientes=len(listaTerminalesTemp)
+                        for r in range(indexProduccionesSiguientes):
+                            indexProduccionesSiguientes2=len(listaTerminalesTemp[r])
+                            for g in range(indexProduccionesSiguientes2):
+                                produccionNueva=str(listaTerminalesTemp[r][g])+","+str(listaTerminalesTemp[r][g])+";λ"
+                                listaProducciones.append(produccionNueva)
         indexInterno = len(listaGramaticasTc2[x])
         for y in range(indexInterno):
             if(y==2):
@@ -175,12 +213,9 @@ def generarAutomata():
                 for z in range(indexProducciones):
                     cadenaProduccion = str(listaGramaticasTc2[x][y][z]).split("->")
                     cadenaProduccion2=(str(cadenaProduccion).split(","))
-                    print(str(cadenaProduccion2[1]))
-                    print(str(cadenaProduccion2[0].replace("[\"[\'","")))
                     indexProdAuto = len(cadenaProduccion2)
                     for w in range(indexProdAuto):
                         if(w==0):
-                            #indexProdAuto2=len(cadenaProduccion2[w])
                             cadenaTemp1=str(cadenaProduccion2[w].replace("[\"[\'",""))
                             cadenaTemp2=cadenaTemp1.replace("\"","")
                             cadProdTempAuto="λ,"+cadenaTemp2+";"
@@ -195,47 +230,125 @@ def generarAutomata():
                             cadenaTemp6=cadenaTemp5.replace(" \'","")
                             cadenaTemp8=cadenaTemp6.replace("\'","")
                             cadProdTempAuto=cadProdTempAuto+cadenaTemp8
-                    
-                    #producciones.append(cadenaProduccion2)1
-
                     listaProducciones.append(cadProdTempAuto)
                     cadProdTempAuto=""
-  
-    indexExterno = len(listaGramaticasT)
-    for x in range(indexExterno):
-        indexMedio = len(listaGramaticasT[x])
-        for y in range (indexMedio):
-            if(y==0):
-                nombreAutomata=nombreAutomata+str(listaGramaticasT[x][y])
-            elif(y==1):
-                indexInterno1=len(listaGramaticasT[x][y])
-                for z in range(indexInterno1):
-                    if(z==0):
-                        noTerminales=str(listaGramaticasT[x][y][z])
-                    elif(z==1):
-                        terminales=terminales+"Terminales = {"+str(listaGramaticasT[x][y][z])+"} \n"
-                        alfabetoPila=alfabetoPila+"Alfabeto de Pila = {"+str(listaGramaticasT[x][y][z])+","+noTerminales+", #"
-        print(nombreAutomata)
-        print(terminales)
-        print(alfabetoPila)
-        print(estados)
-        print(estadoInicio)
-        print(estadoFin)
-        for obj in listaProducciones:
-            print(obj)
-        cadenaFinalProduccionAutomataPila=nombreAutomata+";"+terminales+";"+alfabetoPila+";"+estados+";"+estadoInicio+";"+estadoFin+";"+str(listaProducciones)
-        listaGramaticaAutoPila.append(cadenaFinalProduccionAutomataPila)
-        listaProducciones.clear()  
+    print(nombreAutomata)
+    listaNombresGramaticasAP.append(nombreAutomata)
+    print(terminales)
+    listaTerminalesGramaticasAP.append(terminales)
+    print(alfabetoPila)
+    listaAlfabetoGramaticasAP.append(terminales)
+    print(estados)
+    print(estadoInicio)
+    print(estadoFin)
+    for obj in listaProducciones:
+        print(obj)
+    listaProduccionesGramaticasAp.append(list(listaProducciones))
+    listaProducciones.clear()
+    #------------------------------- Datos para Grafo y HTML -----------------------------------------------------
+    indexlistas=len(listaProduccionesGramaticasAp)
+    for x in range(indexlistas):
+        indexProducciones1 = len(listaProduccionesGramaticasAp[x])
+        for y in range(indexProducciones1):
+            print(listaProduccionesGramaticasAp[x][y])
+            produccionCadTemp=produccionCadTemp+str(listaProduccionesGramaticasAp[x][y])+"\n"
+        listaProduccionesAPila.append(produccionCadTemp)
+        produccionCadTemp=""
+        #-------------------- Creacion de Grafos ---------------------------------
+        global contadorGraficas
+        file = open("grafo"+str(contadorGraficas)+".dot","w")
+        file.write("digraph G{\n")
+        file.write("rankdir=LR;\n")
+        file.write(crearNodo("A","i","circle"))
+        file.write(crearNodo("B","p","circle"))
+        file.write(crearNodo("C","q","circle"))
+        file.write(crearNodo("D","f","doublecircle"))
+        file.write(unionNodo("A","B")+"[label = \"λ,λ;#\"];")
+        file.write(unionNodo("B","C")+"[label = \"λ,λ;"+str(listaGramaticasT[0][1][2]).replace("']","")+"\"];")
+        file.write(unionNodo("C","C")+"[label = \""+str(listaProduccionesAPila[x])+"\"];")
+        file.write(unionNodo("C","D")+"[label = \"λ,#;λ\"];")
+        file.write("}")
+        file.close()
+        os.system('dot -Tpng grafo'+str(contadorGraficas)+'.dot -o grafo'+str(contadorGraficas)+'.png')
+        #os.startfile("grafo.png")
+        listaIndiceGraficas.append(contadorGraficas)
+        contadorGraficas=contadorGraficas+1
     
-    for obj in listaGramaticaAutoPila:
-        print(obj)
+    file = open("index.html","w")
+    file.write("<!DOCTYPE HTML>\n")
+    file.write("<htm lang = \"es\">\n")
+    file.write("<head>\n")
+    file.write("<TITLE>GENERAR AUTOMATA DE PILA</TITLE>\n")
+    #file.write("<link href=\"/Users/negrocorado/Desktop/Style.css\" rel=\"stylesheet\" type=\"text/css\">\n")
+    file.write("</head>\n")
+    file.write("<body>\n")
+    file.write("<div id = \"titulo\">\n")
+    file.write("<h1>RESULTADO DE AUTOMATA DE PILA GENERADO</h1>\n")
+    file.write("</div>\n")
+    file.write("<div id= \"cuerpo\">\n")
+    file.write("<table id= \"TablaGramatica\">\n")
+    file.write("<tr>\n")
+    file.write("    <td>\n")
+    indexHTML=len(listaNombresGramaticasAP)
+    for x in range(indexHTML):
+        file.write("<h2>Nombre:  "+str(listaNombresGramaticasAP[x])+" </h2>\n")
+        file.write("<h2>Terminales: { "+str(listaTerminalesGramaticasAP[x])+" }</h2>\n")
+        file.write("<h2>AlfabetoPila: { "+str(listaAlfabetoGramaticasAP[x])+" }</h2>\n")
+        file.write("<h2>"+estados+"</h2>\n")
+        file.write("<h2>"+estadoInicio+"</h2>\n")
+        file.write("<h2>"+estadoFin+"</h2>\n")
+    file.write("    </td>\n")
+    file.write("    <td>\n")
+    indexGrafos=len(listaIndiceGraficas)
+    for y in range(indexGrafos):
+        file.write("        <img src=\""+"grafo"+str(listaIndiceGraficas[y])+".png"+"\">\n")
+    file.write("    </td>\n")
+    file.write("</tr>\n")
+    file.write("</table>")
+    file.write("</div>\n")
+    file.write("<div>\n")
+    file.write("<p><h3>  Walther Andree Corado Paiz </h3></p>\n")
+    file.write("<p><h3>  Carnet: 201313861 </h3></p>\n")
+    file.write("<p><h3>  Lenguajes Formales B- </h3></p>\n")
+    file.write("</div>\n")
+    file.write("</body>\n")
+    file.write("</htmlL>\n")
+    #os.startfile("index.html")
+    #os.open("index.html")
+    
+        
+    
+            
 
 
-def pruebaImprimir():
-    print(int(len(listaGramaticasProducciones)))
-    for obj in listaGramaticasTc:
-        print(obj)
 
+def crearGrafo():
+    global contadorGraficas
+    file = open("grafo"+str(contadorGraficas)+".dot","w")
+    file.write("digraph G{\n")
+    file.write("rankdir=LR;\n")
+    file.write(crearNodo("A","i","circle"))
+    file.write(crearNodo("B","p","circle"))
+    file.write(crearNodo("C","q","circle"))
+    file.write(crearNodo("D","f","doublecircle"))
+    file.write(unionNodo("A","B")+"[label = \"λ,λ;#\"];")
+    file.write(unionNodo("B","C")+"[label = \"λ,λ;"+str(listaGramaticasT[0][1][2]).replace("']","")+"\"];")
+    file.write(unionNodo("C","C"))
+    file.write(unionNodo("C","D"))
+    #file.write("A -> B -> C")
+    #file.write("A[labe=\"Walther Corado\"]\n")
+    file.write("}")
+    file.close()
+    os.system('dot -Tpng grafo'+str(contadorGraficas)+'.dot -o grafo'+str(contadorGraficas)+'.png')
+    #os.startfile("grafo.png")
+    contadorGraficas=contadorGraficas+1
+
+
+def crearNodo(identificador,nombre, shape):
+    return identificador + "[label=\""+ nombre + "\",shape="+ shape + "]\n"
+
+def unionNodo(nodoA,nodoB):
+    return nodoA + "->" + nodoB +"\n"
 
 def salir():
     #------------------- Funcion que es llamada antes de salir del programa imprime mis datos personales -------------------------------
