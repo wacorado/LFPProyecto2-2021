@@ -28,6 +28,7 @@ listaProducciones=[]
 listaCadenaIngresada=[]
 pilaAutomata=[]
 listaEstadoPila=[]
+listaTablaFinal=[]
 def menu():
     #-------------- Funcion que imprime las posibles opciones a acceder y retorna el valor ingresado -----------------------------------
     print("1. Carga de Archivo")
@@ -335,7 +336,7 @@ def reporteRecorrido():
     file.write(crearNodo("B","p","circle","black"))
     file.write(crearNodo("C","q","circle","black"))
     file.write(crearNodo("D","f","doublecircle","black"))
-    file.write(unionNodo("A","B")+"[label = \"λ,λ;#\""+",color=red];")
+    file.write(unionNodo("A","B")+"[label = \"λ,λ,#\""+",color=red];")
     file.write(unionNodo("B","C")+"[label = \"λ,λ;"+str(listaGramaticasT[0][1][2]).replace("']","")+"\""+",color=black"+"];")
     indexProducionesOp4=len(listaProduccionesAPila)
     for x in range(indexProducionesOp4):
@@ -349,6 +350,9 @@ def reporteRecorrido():
     contadorGraficas=contadorGraficas+1
     pilaAutomata.append("#")
     listaEstadoPila.append(list(pilaAutomata))
+    listaTemp=["#",cadenaIngreso,"λ,λ,#"]
+    listaTablaFinal.append(list(listaTemp))
+    listaTemp.clear()
     imprimePila()
     #----------------------------------------------- Se Crea el Segundo Grafo para la pagina -----------------------------------------
     file = open("grafo"+str(contadorGraficas)+".dot","w")
@@ -373,6 +377,9 @@ def reporteRecorrido():
     pilaAutomata.append("S")
     listaEstadoPila.append(list(pilaAutomata))
     print("Cadena: "+cadenaIngreso)
+    listaTemp=["#S",cadenaIngreso,"λ,λ,"+str(listaGramaticasT[0][1][2]).replace("']","")]
+    listaTablaFinal.append(list(listaTemp))
+    listaTemp.clear()
     imprimePila()
 
     indexPilaEstudiada=len(pilaAutomata)
@@ -397,12 +404,18 @@ def reporteRecorrido():
                                     pilaAutomata.remove(str(pilaAutomata[indexPilaEstudiada-1]))
                                     #pilaAutomata.append(str(produccion[z+1]))
                                     listaEstadoPila.append(list(pilaAutomata))
+                                    listaTemp=[str(pilaAutomata[indexPilaEstudiada-1]),cadenaIngreso,str(produccion[z])]
+                                    listaTablaFinal.append(list(listaTemp))
+                                    listaTemp.clear()
                                     grafoEstadoQ()
                                     imprimePila()
                                 else:
                                     pilaAutomata.remove(str(pilaAutomata[indexPilaEstudiada-1]))
                                     pilaAutomata.append(str(produccion[z+1]))
                                     listaEstadoPila.append(list(pilaAutomata))
+                                    listaTemp=[str(pilaAutomata[indexPilaEstudiada-1]),cadenaIngreso,str(produccion[z])]
+                                    listaTablaFinal.append(list(listaTemp))
+                                    listaTemp.clear()
                                     grafoEstadoQ()
                                     imprimePila()
                             elif(pilaAutomata[indexPilaEstudiada-1]==cadenaIngreso[a]):
@@ -411,6 +424,9 @@ def reporteRecorrido():
                                     #pilaAutomata.append(str(produccion[z+1]))
                                     listaEstadoPila.append(list(pilaAutomata))
                                     cadenaIngreso.replace(cadenaIngreso[a],"",1)
+                                    listaTemp=[str(pilaAutomata[indexPilaEstudiada-1]),cadenaIngreso,str(produccion[z])]
+                                    listaTablaFinal.append(list(listaTemp))
+                                    listaTemp.clear()
                                     grafoEstadoQ()
                                     imprimePila()
                                 else:
@@ -418,42 +434,14 @@ def reporteRecorrido():
                                     pilaAutomata.append(str(produccion[z+1]))
                                     listaEstadoPila.append(list(pilaAutomata))
                                     cadenaIngreso.replace(cadenaIngreso[a],"",1)
-                                    grafoEstadoQ()
-                                    imprimePila()
-                        else:
-                            indexComparativoProducciones=len(produccion[z])
-                            if(pilaAutomata[indexPilaEstudiada-1][indexComparativoProducciones-1]==produccion[z]):
-                                if(str(produccion[z+1])=="λ"):
-                                    pilaAutomata.remove(str(pilaAutomata[indexPilaEstudiada-1]))
-                                    #pilaAutomata.append(str(produccion[z+1]))
-                                    listaEstadoPila.append(list(pilaAutomata))
-                                    grafoEstadoQ()
-                                    imprimePila()
-                                else:
-                                    pilaAutomata.remove(str(pilaAutomata[indexPilaEstudiada-1]))
-                                    pilaAutomata.append(str(produccion[z+1]))
-                                    listaEstadoPila.append(list(pilaAutomata))
-                                    grafoEstadoQ()
-                                    imprimePila()
-                            elif(pilaAutomata[indexPilaEstudiada-1][indexComparativoProducciones-1]==cadenaIngreso[a]):
-                                if(str(produccion[z+1])=="λ"):
-                                    pilaAutomata.remove(str(pilaAutomata[indexPilaEstudiada-1]))
-                                    #pilaAutomata.append(str(produccion[z+1]))
-                                    listaEstadoPila.append(list(pilaAutomata))
-                                    cadenaIngreso.replace(cadenaIngreso[a],"",1)
-                                    grafoEstadoQ()
-                                    imprimePila()
-                                else:
-                                    pilaAutomata.remove(str(pilaAutomata[indexPilaEstudiada-1]))
-                                    pilaAutomata.append(str(produccion[z+1]))
-                                    listaEstadoPila.append(list(pilaAutomata))
-                                    cadenaIngreso.replace(cadenaIngreso[a],"",1)
-                                    grafoEstadoQ()
-                                    imprimePila()
-                            
-                            
+                                    listaTemp=[str(pilaAutomata[indexPilaEstudiada-1]),cadenaIngreso,str(produccion[z])]
+                                    listaTablaFinal.append(list(listaTemp))
+                                    listaTemp.clear()
 
+                                    grafoEstadoQ()
+                                    imprimePila()
                         
+                            
     #--------------- se genera el HTML DEL recorrido: ----------------------------
     file = open("Recorrido.html","w")
     file.write("<!DOCTYPE HTML>\n")
@@ -464,7 +452,7 @@ def reporteRecorrido():
     file.write("</head>\n")
     file.write("<body>\n")
     file.write("<div id = \"titulo\">\n")
-    file.write("<h1>GENERAR RECORRIDO DE AUTOMATA DE PILA</h1>\n")
+    file.write("<h1>GENERAR RECORRIDO DE Tabla AUTOMATA DE PILA</h1>\n")
     file.write("</div>\n")
     file.write("<div id= \"cuerpo\">\n")
     file.write("<table id= \"TablaGramatica\">\n")
@@ -528,6 +516,65 @@ def crearNodo(identificador,nombre, shape, color):
 def unionNodo(nodoA,nodoB):
     return nodoA + "->" + nodoB +"\n"
 
+def reporteTabla():
+    #--------------- se genera el HTML DEL recorrido: ----------------------------
+    file = open("Tabla.html","w")
+    file.write("<!DOCTYPE HTML>\n")
+    file.write("<htm lang = \"es\">\n")
+    file.write("<head>\n")
+    file.write("<TITLE>GENERAR RECORRIDO DE AUTOMATA DE PILA</TITLE>\n")
+    #file.write("<link href=\"/Users/negrocorado/Desktop/Style.css\" rel=\"stylesheet\" type=\"text/css\">\n")
+    file.write("</head>\n")
+    file.write("<body>\n")
+    file.write("<div id = \"titulo\">\n")
+    file.write("<h1>GENERAR RECORRIDO DE AUTOMATA DE PILA</h1>\n")
+    file.write("</div>\n")
+    file.write("<div id= \"cuerpo\">\n")
+    file.write("<table id= \"TablaGramatica\">\n")
+    file.write("<tr>\n")
+    file.write("    <td>\n")
+    file.write("<h4>iteracion</h4>\n")
+    file.write("    </td>\n")
+    file.write("    <td>\n")
+    file.write("<h4>Pila</h4>\n")
+    file.write("    </td>\n")
+    file.write("    <td>\n")
+    file.write("<h4>Cadena</h4>\n")
+    file.write("    </td>\n")
+    file.write("    <td>\n")
+    file.write("<h4>Transicion</h4>\n")
+    file.write("    </td>\n")
+    file.write("</tr>\n")
+    indexPilaEstudiada=len(listaTablaFinal)
+    for x in range(indexPilaEstudiada):
+        file.write("<tr>\n")
+        file.write("    <td>\n")
+        file.write("<h5>"+str(x)+"</h5>\n")
+        file.write("    </td>\n")
+        file.write("    <td>\n")
+        file.write("<h5>"+str(listaTablaFinal[x][0])+"</h5>\n")
+        file.write("    </td>\n")
+        file.write("    <td>\n")
+        file.write("<h5>"+str(listaTablaFinal[x][1])+"</h5>\n")
+        file.write("    </td>\n")
+        file.write("    <td>\n")
+        file.write("<h5>"+str(listaTablaFinal[x][2])+"</h5>\n")
+        file.write("    </td>\n")
+        file.write("</tr>\n")
+    file.write("</table>")
+    file.write("</div>\n")
+    file.write("<div>\n")
+    file.write("<p><h3>  Walther Andree Corado Paiz </h3></p>\n")
+    file.write("<p><h3>  Carnet: 201313861 </h3></p>\n")
+    file.write("<p><h3>  Lenguajes Formales B- </h3></p>\n")
+    file.write("</div>\n")
+    file.write("</body>\n")
+    file.write("</htmlL>\n")
+    #os.startfile("index.html")
+    #os.open("index.html")
+    print("HTML GENERADO")
+    
+
 def salir():
     #------------------- Funcion que es llamada antes de salir del programa imprime mis datos personales -------------------------------
     print("Carnet: 201313861")
@@ -558,7 +605,7 @@ while(ciclo):
         input("")
     elif numero == "5":
         print("Opcion5")
-        
+        reporteTabla()
         input("")    
     elif numero == "6":
         salir()
