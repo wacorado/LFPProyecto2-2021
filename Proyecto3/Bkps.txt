@@ -270,3 +270,48 @@ nombreAutomata="AP_"
         file.write("<tr><td>"+i+"</td></tr>")
         file.write("\n")
     file.write("</table>")
+
+
+
+    def crearGrafo():
+    global contadorGraficas
+    file = open("grafo"+str(contadorGraficas)+".dot","w")
+    file.write("digraph G{\n")
+    file.write("rankdir=LR;\n")
+    file.write(crearNodo("A","i","circle"))
+    file.write(crearNodo("B","p","circle"))
+    file.write(crearNodo("C","q","circle"))
+    file.write(crearNodo("D","f","doublecircle"))
+    file.write(unionNodo("A","B")+"[label = \"λ,λ;#\"];")
+    file.write(unionNodo("B","C")+"[label = \"λ,λ;"+str(listaGramaticasT[0][1][2]).replace("']","")+"\"];")
+    file.write(unionNodo("C","C"))
+    file.write(unionNodo("C","D"))
+    #file.write("A -> B -> C")
+    #file.write("A[labe=\"Walther Corado\"]\n")
+    file.write("}")
+    file.close()
+    os.system('dot -Tpng grafo'+str(contadorGraficas)+'.dot -o grafo'+str(contadorGraficas)+'.png')
+    #os.startfile("grafo.png")
+    contadorGraficas=contadorGraficas+1
+
+
+
+
+
+    elif(pilaAutomata[indexPilaEstudiada-1]==cadenaIngreso[contadorCadenaIngreso]):
+                            if(str(produccion[z+1])=="λ"):
+                                pilaAutomata.remove(str(pilaAutomata[indexPilaEstudiada-1]))
+                                #pilaAutomata.append(str(produccion[z+1]))
+                                listaEstadoPila.append(list(pilaAutomata))
+                                cadenaIngreso.replace(str(cadenaIngreso[contadorCadenaIngreso],""))
+                                grafoEstadoQ()
+                                imprimePila()
+                                contadorCadenaIngreso=contadorCadenaIngreso+1
+                            else:
+                                pilaAutomata.remove(str(pilaAutomata[indexPilaEstudiada-1]))
+                                pilaAutomata.append(str(produccion[z+1]))
+                                listaEstadoPila.append(list(pilaAutomata))
+                                cadenaIngreso.replace(str(cadenaIngreso[contadorCadenaIngreso],""))
+                                grafoEstadoQ()
+                                imprimePila()
+                                contadorCadenaIngreso=contadorCadenaIngreso+1
