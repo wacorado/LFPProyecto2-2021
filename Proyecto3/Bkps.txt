@@ -410,3 +410,6 @@ nombreAutomata="AP_"
     #os.startfile("index.html")
     #os.open("index.html")
     print("HTML GENERADO")
+
+
+/Users/negrocorado/Desktop/Walther Corado/LFP 1 2021/Proyecto3
